@@ -1,5 +1,7 @@
+from src import chain_of_execution
+
 def main():
-    print("Hello from final-project!")
+    chain_of_execution()
 
 
 if __name__ == "__main__":
