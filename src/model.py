@@ -1,8 +1,8 @@
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
+from src.feature_extraction import extract_features_from_data
 
-
-def train_model(X_train, train_labels, X_test, test_labels):
+def train_model(train_data, train_labels, test_data, test_labels):
     rf_classifier = RandomForestClassifier(
         n_estimators=100,
         min_samples_split=2,
@@ -10,11 +10,10 @@ def train_model(X_train, train_labels, X_test, test_labels):
         random_state=42,
     )
 
-    X_train_reshaped = X_train.reshape(X_train.shape[0], -1)
-    X_test_reshaped = X_test.reshape(X_test.shape[0], -1)
+    X_train, X_test = extract_features_from_data(train_data, test_data)
 
-    rf_classifier.fit(X_train_reshaped, train_labels)
-    y_pred = rf_classifier.predict(X_test_reshaped)
+    rf_classifier.fit(X_train, train_labels)
+    y_pred = rf_classifier.predict(X_test)
 
     # Print results
     print(f"Accuracy: {accuracy_score(test_labels, y_pred):.4f}")
