@@ -1,7 +1,8 @@
-from src import chain_of_execution
+from src import chain_of_execution, visualization
 
 def main():
-    chain_of_execution()
+    # chain_of_execution()
+    visualization()
 
 
 if __name__ == "__main__":
