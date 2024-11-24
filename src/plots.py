@@ -2,6 +2,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import numpy as np
+from statsmodels.tsa.seasonal import seasonal_decompose
+
 
 def daily_average_occupancy(train_data):
     daily_avg = train_data.mean(axis=(0, 2))
@@ -83,4 +85,28 @@ def weekly_occupancy_trends(train_data):
     plt.xticks(rotation=45)
     plt.tight_layout()
     plt.savefig('src/images/WeeklyOccupancyTrends.png')
+    plt.close()
+
+def time_series_decomposition(train_data):
+    sensor_data = train_data[:, 0, :].flatten()
+    result = seasonal_decompose(sensor_data, model='additive', period=144)
+    # Generate timestamps (example for 10-minute intervals over 7 days)
+    timestamps = pd.date_range(start="2008-01-01", periods=len(sensor_data), freq="16min")
+
+    # Update the plot to show timestamps
+    plt.figure(figsize=(12, 10))
+    plt.subplot(411)
+    plt.plot(timestamps, result.observed)
+    plt.title('Observed')
+    plt.subplot(412)
+    plt.plot(timestamps, result.trend)
+    plt.title('Trend')
+    plt.subplot(413)
+    plt.plot(timestamps, result.seasonal)
+    plt.title('Seasonal')
+    plt.subplot(414)
+    plt.plot(timestamps, result.resid)
+    plt.title('Residual')
+    plt.tight_layout()
+    plt.savefig('src/images/TimeSeriesDecomposition.png')
     plt.close()
