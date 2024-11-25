@@ -2,7 +2,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import pandas as pd
 import numpy as np
+from sklearn.cluster import KMeans
 from statsmodels.tsa.seasonal import seasonal_decompose
+
+from src.feature_extraction import extract_features_from_data
 
 
 def daily_average_occupancy(train_data):
@@ -109,4 +112,30 @@ def time_series_decomposition(train_data):
     plt.title('Residual')
     plt.tight_layout()
     plt.savefig('src/images/TimeSeriesDecomposition.png')
+    plt.close()
+    
+def average_daily_patterns_by_zones(train_data, test_data):
+    kmeans = KMeans(n_clusters=5, random_state=42)
+    X_train, X_test = extract_features_from_data(train_data, test_data)
+
+    clusters = kmeans.fit_predict(X_train)
+
+    cluster_names = {
+        0: "Peak Traffic Zones",
+        1: "Low-Traffic Areas",
+        2: "Transitional Periods",
+        3: "Anomalous Zones",
+        4: "Dynamic or Mixed Zones"
+    }
+
+    plt.figure(figsize=(10, 8))
+    for i in range(5):
+        cluster_data = train_data[clusters == i].mean(axis=0).mean(axis=0)
+        plt.plot(cluster_data, label=f"{cluster_names[i]}")
+        
+    plt.title('Average Daily Pattern by Zones')
+    plt.xlabel('Time (10-minute intervals)')
+    plt.ylabel('Average Occupancy Rate')
+    plt.legend()
+    plt.savefig('src/images/AverageDailyPatternsByZones.png')
     plt.close()

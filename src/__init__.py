@@ -1,6 +1,6 @@
 from src.pre_processing import get_train_test_data
 from src.model import train_model
-from src.plots import daily_average_occupancy, hourly_average_occupancy, average_occupancy_heatmap, weekly_occupancy_trends, time_series_decomposition
+from src.plots import daily_average_occupancy, hourly_average_occupancy, average_occupancy_heatmap, weekly_occupancy_trends, time_series_decomposition, average_daily_patterns_by_zones
 
 
 def chain_of_execution():
@@ -16,3 +16,4 @@ def visualization():
     average_occupancy_heatmap(train_data)
     weekly_occupancy_trends(train_data)
     time_series_decomposition(train_data)
+    average_daily_patterns_by_zones(train_data, test_data)
