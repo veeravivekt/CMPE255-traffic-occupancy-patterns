@@ -20,6 +20,7 @@ def daily_average_occupancy(train_data):
     plt.savefig('src/images/DailyAverageOccupancy.png')
     plt.close()
 
+
 def hourly_average_occupancy(train_data):
     # Calculate hourly average occupancy
     hourly_avg = train_data.mean(axis=(0, 1)).reshape(24, 6).mean(axis=1)
@@ -33,6 +34,7 @@ def hourly_average_occupancy(train_data):
     plt.grid(True)
     plt.savefig('src/images/HourlyAverageOccupancy.png')
     plt.close()
+
 
 def average_occupancy_heatmap(train_data):
     # Calculate average occupancy rate by day and hour
@@ -53,6 +55,7 @@ def average_occupancy_heatmap(train_data):
     plt.ylabel('Day of Week')
     plt.savefig('src/images/AverageOccupancyHeatmap.png')
     plt.close()
+
 
 def weekly_occupancy_trends(train_data):
     n_days, n_sensors, n_time_intervals = train_data.shape
@@ -90,6 +93,7 @@ def weekly_occupancy_trends(train_data):
     plt.savefig('src/images/WeeklyOccupancyTrends.png')
     plt.close()
 
+
 def time_series_decomposition(train_data):
     sensor_data = train_data[:, 0, :].flatten()
     result = seasonal_decompose(sensor_data, model='additive', period=144)
@@ -113,7 +117,8 @@ def time_series_decomposition(train_data):
     plt.tight_layout()
     plt.savefig('src/images/TimeSeriesDecomposition.png')
     plt.close()
-    
+
+   
 def average_daily_patterns_by_zones(train_data, test_data):
     kmeans = KMeans(n_clusters=5, random_state=42)
     X_train, X_test = extract_features_from_data(train_data, test_data)
@@ -138,4 +143,14 @@ def average_daily_patterns_by_zones(train_data, test_data):
     plt.ylabel('Average Occupancy Rate')
     plt.legend()
     plt.savefig('src/images/AverageDailyPatternsByZones.png')
+    plt.close()
+
+
+def correlation_analysis(train_data):
+    correlation_matrix = np.corrcoef(train_data.reshape(-1, 963).T)
+    plt.figure(figsize=(12, 10))
+    sns.heatmap(correlation_matrix, cmap='coolwarm', center=0)
+    plt.title('Correlation Between Sensors')
+    plt.gca().invert_yaxis()
+    plt.savefig('src/images/CorrelationAnalysis.png')
     plt.close()

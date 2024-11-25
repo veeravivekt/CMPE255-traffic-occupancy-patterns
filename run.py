@@ -1,7 +1,7 @@
 from src import chain_of_execution, visualization
 
 def main():
-    # chain_of_execution()
+    chain_of_execution()
     visualization()
 
 
